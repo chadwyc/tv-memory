@@ -1,295 +1,997 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#101218">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#101218">
+<title>TV Memory</title>
 
-  <title>TV Memory</title>
+<style>
+* { box-sizing: border-box; }
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+body {
+  margin: 0;
+  background: #101218;
+  color: white;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
 
-    body {
-      margin: 0;
-      background: #101218;
-      color: white;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
+button, input, select { font-family: inherit; }
 
-    button, input {
-      font-family: inherit;
-    }
+.app {
+  max-width: 600px;
+  margin: auto;
+  padding: 28px 18px 105px;
+}
 
-    .app {
-      max-width: 600px;
-      margin: auto;
-      padding: 24px 18px 105px;
-    }
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
 
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 30px;
-    }
+.logo {
+  font-size: 30px;
+  font-weight: 800;
+}
 
-    .logo {
-      font-size: 28px;
-      font-weight: 800;
-    }
+.logo span { color: #7c8cff; }
 
-    .logo span {
-      color: #7c8cff;
-    }
+.add-button {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: #7c8cff;
+  color: white;
+  font-size: 30px;
+}
 
-    .add-button {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      border: none;
-      background: #7c8cff;
-      color: white;
-      font-size: 30px;
-      cursor: pointer;
-    }
+h2 {
+  font-size: 14px;
+  letter-spacing: 1.5px;
+  color: #9da3b4;
+  margin: 28px 0 14px;
+}
 
-    h2 {
-      font-size: 14px;
-      letter-spacing: 1.5px;
-      color: #9da3b4;
-      margin-bottom: 14px;
-    }
+.card {
+  background: #1a1d26;
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 14px;
+}
 
-    .card {
-      background: #1a1d26;
-      border-radius: 18px;
-      padding: 18px;
-      margin-bottom: 14px;
-    }
+.show-card {
+  display: flex;
+  gap: 14px;
+}
 
-    .show-name {
-      font-size: 22px;
-      font-weight: 700;
-      margin-bottom: 5px;
-    }
+.show-poster {
+  width: 92px;
+  height: 132px;
+  border-radius: 11px;
+  object-fit: cover;
+  background: #292d38;
+  flex-shrink: 0;
+}
 
-    .platform {
-      color: #9da3b4;
-      font-size: 14px;
-      margin-bottom: 16px;
-    }
+.show-info {
+  flex: 1;
+  min-width: 0;
+}
 
-    .episode {
-      font-size: 16px;
-      line-height: 1.45;
-      margin-bottom: 16px;
-    }
+.show-name {
+  font-size: 21px;
+  font-weight: 750;
+  margin-bottom: 5px;
+}
 
-    .main-button {
-      width: 100%;
-      border: none;
-      padding: 14px;
-      border-radius: 12px;
-      background: #7c8cff;
-      color: white;
-      font-weight: 700;
-      font-size: 15px;
-      cursor: pointer;
-    }
+.platform {
+  color: #9da3b4;
+  font-size: 14px;
+  margin-bottom: 11px;
+}
 
-    .empty {
-      color: #73798a;
-      text-align: center;
-      padding: 30px 10px;
-    }
+.episode {
+  font-size: 15px;
+  line-height: 1.4;
+  margin-bottom: 13px;
+}
 
-    nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 75px;
-      background: #171920;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      border-top: 1px solid #292c36;
-    }
+.episode-number {
+  color: #8c99ff;
+  font-weight: 700;
+}
 
-    nav div {
-      text-align: center;
-      color: #8d93a4;
-      font-size: 12px;
-    }
+.main-button {
+  width: 100%;
+  border: none;
+  padding: 13px;
+  border-radius: 11px;
+  background: #7c8cff;
+  color: white;
+  font-weight: 750;
+  font-size: 14px;
+}
 
-    nav .active {
-      color: #8c99ff;
-    }
+.small-button {
+  border: none;
+  padding: 10px 13px;
+  border-radius: 10px;
+  background: #34394a;
+  color: white;
+  font-weight: 700;
+}
 
-    .nav-icon {
-      font-size: 22px;
-      display: block;
-      margin-bottom: 3px;
-    }
+.remove-button {
+  background: transparent;
+  color: #888e9e;
+  border: none;
+  font-size: 12px;
+  margin-top: 8px;
+  padding: 4px 0;
+}
 
-    /* SEARCH SCREEN */
+.empty {
+  color: #73798a;
+  text-align: center;
+  padding: 25px 10px;
+}
 
-    #searchScreen {
-      display: none;
-    }
+nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 78px;
+  padding-bottom: env(safe-area-inset-bottom);
+  background: #171920;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-top: 1px solid #292c36;
+  z-index: 20;
+}
 
-    .back-row {
-      display: flex;
-      align-items: center;
-      margin-bottom: 22px;
-    }
+nav div {
+  text-align: center;
+  color: #8d93a4;
+  font-size: 12px;
+  flex: 1;
+}
 
-    .back-button {
-      background: none;
-      border: none;
-      color: #8c99ff;
-      font-size: 18px;
-      padding: 0;
-      margin-right: 15px;
-      cursor: pointer;
-    }
+nav .active { color: #8c99ff; }
 
-    .screen-title {
-      font-size: 26px;
-      font-weight: 800;
-    }
+.nav-icon {
+  font-size: 22px;
+  display: block;
+  margin-bottom: 3px;
+}
 
-    .search-box {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 22px;
-    }
+.screen { display: none; }
+.screen.active { display: block; }
 
-    .search-box input {
-      flex: 1;
-      min-width: 0;
-      background: #1a1d26;
-      color: white;
-      border: 1px solid #333745;
-      border-radius: 13px;
-      padding: 14px;
-      font-size: 17px;
-      outline: none;
-    }
+.back-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 22px;
+}
 
-    .search-box input:focus {
-      border-color: #7c8cff;
-    }
+.back-button {
+  background: none;
+  border: none;
+  color: #8c99ff;
+  font-size: 18px;
+  padding: 0;
+  margin-right: 15px;
+}
 
-    .search-button {
-      border: none;
-      border-radius: 13px;
-      background: #7c8cff;
-      color: white;
-      padding: 0 18px;
-      font-weight: 700;
-      cursor: pointer;
-    }
+.screen-title {
+  font-size: 27px;
+  font-weight: 800;
+}
 
-    .search-message {
-      text-align: center;
-      color: #8d93a4;
-      padding: 25px 10px;
-    }
+.search-box {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 22px;
+}
 
-    .result {
-      display: flex;
-      gap: 14px;
-      background: #1a1d26;
-      border-radius: 16px;
-      padding: 12px;
-      margin-bottom: 13px;
-    }
+.search-box input {
+  flex: 1;
+  min-width: 0;
+  background: #1a1d26;
+  color: white;
+  border: 1px solid #333745;
+  border-radius: 13px;
+  padding: 14px;
+  font-size: 17px;
+  outline: none;
+}
 
-    .poster {
-      width: 85px;
-      height: 120px;
-      border-radius: 10px;
-      object-fit: cover;
-      background: #292d38;
-      flex-shrink: 0;
-    }
+.search-button {
+  border: none;
+  border-radius: 13px;
+  background: #7c8cff;
+  color: white;
+  padding: 0 18px;
+  font-weight: 700;
+}
 
-    .poster-placeholder {
-      width: 85px;
-      height: 120px;
-      border-radius: 10px;
-      background: #292d38;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 30px;
-      flex-shrink: 0;
-    }
+.search-message {
+  text-align: center;
+  color: #8d93a4;
+  padding: 25px 10px;
+}
 
-    .result-info {
-      flex: 1;
-      min-width: 0;
-    }
+.result {
+  display: flex;
+  gap: 14px;
+  background: #1a1d26;
+  border-radius: 16px;
+  padding: 12px;
+  margin-bottom: 13px;
+}
 
-    .result-title {
-      font-size: 18px;
-      font-weight: 700;
-      margin: 3px 0 6px;
-    }
+.poster {
+  width: 85px;
+  height: 120px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: #292d38;
+  flex-shrink: 0;
+}
 
-    .result-meta {
-      font-size: 13px;
-      color: #a0a5b5;
-      margin-bottom: 5px;
-    }
+.poster-placeholder {
+  width: 85px;
+  height: 120px;
+  border-radius: 10px;
+  background: #292d38;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  flex-shrink: 0;
+}
 
-    .select-button {
-      margin-top: 10px;
-      border: none;
-      background: #34394a;
-      color: white;
-      font-weight: 700;
-      border-radius: 9px;
-      padding: 9px 13px;
-      cursor: pointer;
-    }
+.result-info {
+  flex: 1;
+  min-width: 0;
+}
 
-    .credit {
-      text-align: center;
-      color: #626878;
-      font-size: 11px;
-      margin-top: 30px;
-    }
+.result-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 3px 0 6px;
+}
 
-    .credit a {
-      color: #7c8cff;
-      text-decoration: none;
-    }
+.result-meta {
+  font-size: 13px;
+  color: #a0a5b5;
+  margin-bottom: 5px;
+}
 
-  </style>
+.select-button {
+  margin-top: 10px;
+  border: none;
+  background: #34394a;
+  color: white;
+  font-weight: 700;
+  border-radius: 9px;
+  padding: 9px 13px;
+}
+
+.setup-hero {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 25px;
+}
+
+.setup-poster {
+  width: 110px;
+  height: 157px;
+  border-radius: 13px;
+  object-fit: cover;
+  background: #292d38;
+}
+
+.setup-name {
+  font-size: 25px;
+  font-weight: 800;
+  margin: 8px 0 7px;
+}
+
+.setup-meta {
+  color: #979dac;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  font-size: 14px;
+  color: #a7acba;
+  font-weight: 650;
+  margin-bottom: 8px;
+}
+
+.form-control {
+  width: 100%;
+  background: #1a1d26;
+  color: white;
+  border: 1px solid #343845;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 16px;
+  appearance: none;
+}
+
+.note {
+  color: #777d8c;
+  font-size: 12px;
+  line-height: 1.4;
+  margin-top: 8px;
+}
+
+.waiting-card {
+  background: #1a1d26;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.waiting-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.waiting-info {
+  color: #949aaa;
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+.credit {
+  text-align: center;
+  color: #626878;
+  font-size: 11px;
+  margin-top: 30px;
+}
+</style>
 </head>
 
 <body>
 
-  <div class="app">
+<div class="app">
 
-    <!-- HOME SCREEN -->
+  <!-- HOME -->
+  <div id="homeScreen" class="screen active">
 
-    <div id="homeScreen">
+    <header>
+      <div class="logo">TV <span>Memory</span></div>
+      <button class="add-button" onclick="openSearch()">+</button>
+    </header>
 
-      <header>
-        <div class="logo">TV <span>Memory</span></div>
-        <button class="add-button" onclick="openSearch()">+</button>
-      </header>
+    <h2>UP NEXT</h2>
+    <div id="upNextList"></div>
 
-      <h2>UP NEXT</h2>
+    <h2>WAITING FOR NEW EPISODES</h2>
+    <div id="waitingList"></div>
 
+  </div>
+
+
+  <!-- SEARCH -->
+  <div id="searchScreen" class="screen">
+
+    <div class="back-row">
+      <button class="back-button" onclick="showHome()">‹ Back</button>
+      <div class="screen-title">Add Show</div>
+    </div>
+
+    <div class="search-box">
+      <input
+        id="searchInput"
+        type="search"
+        placeholder="Search for a TV show..."
+        autocomplete="off"
+      >
+      <button class="search-button" onclick="searchShows()">Search</button>
+    </div>
+
+    <div id="results">
+      <div class="search-message">
+        Search for a show you're watching.
+      </div>
+    </div>
+
+    <div class="credit">TV data provided by TVmaze</div>
+
+  </div>
+
+
+  <!-- SETUP -->
+  <div id="setupScreen" class="screen">
+
+    <div class="back-row">
+      <button class="back-button" onclick="openSearch()">‹ Back</button>
+      <div class="screen-title">Set Up Show</div>
+    </div>
+
+    <div id="setupLoading" class="search-message">
+      Loading episodes...
+    </div>
+
+    <div id="setupContent" style="display:none;">
+
+      <div class="setup-hero">
+        <img id="setupPoster" class="setup-poster" alt="">
+
+        <div>
+          <div id="setupName" class="setup-name"></div>
+          <div id="setupYear" class="setup-meta"></div>
+          <div id="setupNetwork" class="setup-meta"></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Watching on</label>
+
+        <select id="platformSelect" class="form-control">
+          <option>Netflix</option>
+          <option>Paramount+</option>
+          <option>Apple TV+</option>
+          <option>Hulu</option>
+          <option>Disney+</option>
+          <option>Max</option>
+          <option>Prime Video</option>
+          <option>Peacock</option>
+          <option>AMC+</option>
+          <option>ESPN+</option>
+          <option>YouTube TV</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Season</label>
+        <select
+          id="seasonSelect"
+          class="form-control"
+          onchange="populateEpisodeSelect()"
+        ></select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Last episode watched</label>
+        <select id="episodeSelect" class="form-control"></select>
+
+        <div class="note">
+          Choose “None yet” if you haven't started this show.
+        </div>
+      </div>
+
+      <button class="main-button" onclick="saveSelectedShow()">
+        ADD TO TV MEMORY
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- MY SHOWS -->
+  <div id="myShowsScreen" class="screen">
+
+    <header>
+      <div class="screen-title">My Shows</div>
+      <button class="add-button" onclick="openSearch()">+</button>
+    </header>
+
+    <div id="myShowsList"></div>
+
+  </div>
+
+
+  <!-- NEW -->
+  <div id="newScreen" class="screen">
+
+    <header>
+      <div class="screen-title">New Episodes</div>
+    </header>
+
+    <div class="empty">
+      New episode alerts are coming next.
+    </div>
+
+  </div>
+
+
+  <!-- FINISHED -->
+  <div id="finishedScreen" class="screen">
+
+    <header>
+      <div class="screen-title">Finished</div>
+    </header>
+
+    <div id="finishedList"></div>
+
+  </div>
+
+</div>
+
+
+<nav id="bottomNav">
+
+  <div id="navHome" class="active" onclick="showHome()">
+    <span class="nav-icon">▶</span>
+    Up Next
+  </div>
+
+  <div id="navShows" onclick="showMyShows()">
+    <span class="nav-icon">▦</span>
+    My Shows
+  </div>
+
+  <div id="navNew" onclick="showNew()">
+    <span class="nav-icon">●</span>
+    New
+  </div>
+
+  <div id="navFinished" onclick="showFinished()">
+    <span class="nav-icon">✓</span>
+    Finished
+  </div>
+
+</nav>
+
+
+<script>
+
+let library = JSON.parse(localStorage.getItem("tvMemoryLibrary")) || [];
+
+let searchResults = [];
+let selectedShow = null;
+let selectedEpisodes = [];
+
+const screens = document.querySelectorAll(".screen");
+const bottomNav = document.getElementById("bottomNav");
+const searchInput = document.getElementById("searchInput");
+const results = document.getElementById("results");
+
+
+function saveLibrary() {
+  localStorage.setItem("tvMemoryLibrary", JSON.stringify(library));
+}
+
+
+function activateScreen(id, showNav = true) {
+
+  screens.forEach(screen => screen.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+
+  bottomNav.style.display = showNav ? "flex" : "none";
+
+  document.querySelectorAll("nav div").forEach(item => {
+    item.classList.remove("active");
+  });
+
+  window.scrollTo(0, 0);
+}
+
+
+function showHome() {
+
+  activateScreen("homeScreen");
+  document.getElementById("navHome").classList.add("active");
+  renderHome();
+}
+
+
+function showMyShows() {
+
+  activateScreen("myShowsScreen");
+  document.getElementById("navShows").classList.add("active");
+  renderMyShows();
+}
+
+
+function showNew() {
+
+  activateScreen("newScreen");
+  document.getElementById("navNew").classList.add("active");
+}
+
+
+function showFinished() {
+
+  activateScreen("finishedScreen");
+  document.getElementById("navFinished").classList.add("active");
+  renderFinished();
+}
+
+
+function openSearch() {
+
+  activateScreen("searchScreen", false);
+
+  setTimeout(() => {
+    searchInput.focus();
+  }, 100);
+}
+
+
+searchInput.addEventListener("keydown", function(event) {
+
+  if (event.key === "Enter") {
+    searchShows();
+  }
+
+});
+
+
+async function searchShows() {
+
+  const query = searchInput.value.trim();
+
+  if (!query) return;
+
+  results.innerHTML =
+    '<div class="search-message">Searching...</div>';
+
+  try {
+
+    const response = await fetch(
+      "https://api.tvmaze.com/search/shows?q=" +
+      encodeURIComponent(query)
+    );
+
+    if (!response.ok) throw new Error("Search failed");
+
+    searchResults = await response.json();
+
+    renderSearchResults();
+
+  } catch (error) {
+
+    results.innerHTML =
+      '<div class="search-message">Unable to search right now. Please try again.</div>';
+
+  }
+}
+
+
+function renderSearchResults() {
+
+  if (!searchResults.length) {
+
+    results.innerHTML =
+      '<div class="search-message">No shows found.</div>';
+
+    return;
+  }
+
+  results.innerHTML = "";
+
+  searchResults.slice(0, 10).forEach(item => {
+
+    const show = item.show;
+
+    const year = show.premiered
+      ? show.premiered.substring(0, 4)
+      : "Year unknown";
+
+    const platform =
+      show.webChannel?.name ||
+      show.network?.name ||
+      "Platform unknown";
+
+    const imageHTML = show.image?.medium
+      ? `<img class="poster" src="${show.image.medium}" alt="">`
+      : `<div class="poster-placeholder">📺</div>`;
+
+    const result = document.createElement("div");
+
+    result.className = "result";
+
+    result.innerHTML = `
+      ${imageHTML}
+
+      <div class="result-info">
+        <div class="result-title">${escapeHTML(show.name)}</div>
+        <div class="result-meta">${year}</div>
+        <div class="result-meta">${escapeHTML(platform)}</div>
+
+        <button
+          class="select-button"
+          onclick="selectShow(${show.id})"
+        >
+          Select Show
+        </button>
+      </div>
+    `;
+
+    results.appendChild(result);
+  });
+}
+
+
+async function selectShow(showID) {
+
+  const match = searchResults.find(item => item.show.id === showID);
+
+  if (!match) return;
+
+  selectedShow = match.show;
+
+  activateScreen("setupScreen", false);
+
+  document.getElementById("setupLoading").style.display = "block";
+  document.getElementById("setupContent").style.display = "none";
+
+  try {
+
+    const response = await fetch(
+      `https://api.tvmaze.com/shows/${showID}/episodes`
+    );
+
+    if (!response.ok) throw new Error("Episode load failed");
+
+    const data = await response.json();
+
+    selectedEpisodes = data
+      .filter(ep => ep.season && ep.number)
+      .sort((a, b) => {
+        if (a.season !== b.season) return a.season - b.season;
+        return a.number - b.number;
+      });
+
+    prepareSetupScreen();
+
+  } catch (error) {
+
+    document.getElementById("setupLoading").innerHTML =
+      "Unable to load episodes. Please try again.";
+  }
+}
+
+
+function prepareSetupScreen() {
+
+  document.getElementById("setupLoading").style.display = "none";
+  document.getElementById("setupContent").style.display = "block";
+
+  document.getElementById("setupName").textContent =
+    selectedShow.name;
+
+  document.getElementById("setupYear").textContent =
+    selectedShow.premiered
+      ? selectedShow.premiered.substring(0, 4)
+      : "";
+
+  const network =
+    selectedShow.webChannel?.name ||
+    selectedShow.network?.name ||
+    "";
+
+  document.getElementById("setupNetwork").textContent = network;
+
+  const poster = document.getElementById("setupPoster");
+
+  if (selectedShow.image?.medium) {
+    poster.src = selectedShow.image.medium;
+    poster.style.display = "block";
+  } else {
+    poster.style.display = "none";
+  }
+
+  setSuggestedPlatform(network);
+
+  const seasons = [
+    ...new Set(selectedEpisodes.map(ep => ep.season))
+  ].sort((a,b) => a-b);
+
+  const seasonSelect = document.getElementById("seasonSelect");
+
+  seasonSelect.innerHTML = "";
+
+  seasons.forEach(season => {
+
+    const option = document.createElement("option");
+
+    option.value = season;
+    option.textContent = "Season " + season;
+
+    seasonSelect.appendChild(option);
+  });
+
+  populateEpisodeSelect();
+}
+
+
+function setSuggestedPlatform(network) {
+
+  const select = document.getElementById("platformSelect");
+
+  const options = Array.from(select.options);
+
+  const exact = options.find(option =>
+    option.text.toLowerCase() === network.toLowerCase()
+  );
+
+  if (exact) {
+    select.value = exact.value;
+  } else if (network) {
+
+    const loose = options.find(option =>
+      network.toLowerCase().includes(option.text.toLowerCase()) ||
+      option.text.toLowerCase().includes(network.toLowerCase())
+    );
+
+    if (loose) select.value = loose.value;
+  }
+}
+
+
+function populateEpisodeSelect() {
+
+  const season = Number(
+    document.getElementById("seasonSelect").value
+  );
+
+  const episodeSelect =
+    document.getElementById("episodeSelect");
+
+  episodeSelect.innerHTML = "";
+
+  const noneOption = document.createElement("option");
+
+  noneOption.value = "none";
+  noneOption.textContent = "None yet";
+
+  episodeSelect.appendChild(noneOption);
+
+  selectedEpisodes
+    .filter(ep => ep.season === season)
+    .forEach(ep => {
+
+      const option = document.createElement("option");
+
+      option.value = ep.id;
+
+      option.textContent =
+        `Episode ${ep.number} — ${ep.name || "Untitled"}`;
+
+      episodeSelect.appendChild(option);
+    });
+}
+
+
+function saveSelectedShow() {
+
+  const platform =
+    document.getElementById("platformSelect").value;
+
+  const episodeValue =
+    document.getElementById("episodeSelect").value;
+
+  let lastWatchedID = null;
+
+  if (episodeValue !== "none") {
+    lastWatchedID = Number(episodeValue);
+  }
+
+  const existingIndex =
+    library.findIndex(item => item.id === selectedShow.id);
+
+  const record = {
+    id: selectedShow.id,
+    name: selectedShow.name,
+    image: selectedShow.image?.medium || "",
+    platform: platform,
+    status: "watching",
+    lastWatchedID: lastWatchedID,
+    episodes: selectedEpisodes
+  };
+
+  if (existingIndex >= 0) {
+    library[existingIndex] = record;
+  } else {
+    library.push(record);
+  }
+
+  saveLibrary();
+  showHome();
+}
+
+
+function getLastWatchedIndex(show) {
+
+  if (!show.lastWatchedID) return -1;
+
+  return show.episodes.findIndex(
+    ep => ep.id === show.lastWatchedID
+  );
+}
+
+
+function getNextEpisode(show) {
+
+  const lastIndex = getLastWatchedIndex(show);
+
+  const today = new Date();
+  today.setHours(23,59,59,999);
+
+  for (
+    let i = lastIndex + 1;
+    i < show.episodes.length;
+    i++
+  ) {
+
+    const ep = show.episodes[i];
+
+    if (!ep.airdate) continue;
+
+    const airDate = new Date(ep.airdate + "T12:00:00");
+
+    if (airDate <= today) {
+      return ep;
+    }
+  }
+
+  return null;
+}
+
+
+function getFutureEpisode(show) {
+
+  const lastIndex = getLastWatchedIndex(show);
+
+  const today = new Date();
+  today.setHours(23,59,59,999);
+
+  for (
+    let i = lastIndex + 1;
+    i < show.episodes.length;
+    i++
+  ) {
+
+    const ep = show.episodes[i];
+
+    if (!ep.airdate) continue;
+
+    const airDate = new Date(ep.airdate + "T12:00:00");
+
+    if (airDate > today) {
+      return ep;
+    }
+  }
+
+  return null;
+}
+
+
+function renderHome() {
+
+  const upNext = document.getElementById("upNextList");
+  const waiting = document.getElementById("waitingList");
+
+  upNext.innerHTML = "";
+  waiting.innerHTML = "";
+
+  if (!library.length) {
+
+    upNext.innerHTML = `
       <div class="card">
-        <div class="show-name">Welcome to TV Memory</div>
+
+        <div class="show-name">
+          Welcome to TV Memory
+        </div>
 
         <div class="platform">
           Your personal TV tracker
@@ -302,269 +1004,336 @@
         <button class="main-button" onclick="openSearch()">
           + ADD YOUR FIRST SHOW
         </button>
+
       </div>
+    `;
 
-      <h2 style="margin-top:30px;">
-        WAITING FOR NEW EPISODES
-      </h2>
-
+    waiting.innerHTML = `
       <div class="empty">
         Shows you're caught up on will appear here.
       </div>
+    `;
 
-    </div>
+    return;
+  }
 
+  let upCount = 0;
+  let waitingCount = 0;
 
-    <!-- SEARCH SCREEN -->
+  library.forEach(show => {
 
-    <div id="searchScreen">
+    if (show.status === "finished") return;
 
-      <div class="back-row">
-        <button class="back-button" onclick="closeSearch()">
-          ‹ Back
-        </button>
+    const next = getNextEpisode(show);
 
-        <div class="screen-title">
-          Add Show
-        </div>
-      </div>
+    if (next) {
 
-      <div class="search-box">
-        <input
-          id="searchInput"
-          type="search"
-          placeholder="Search for a TV show..."
-          autocomplete="off"
-        >
+      upCount++;
 
-        <button class="search-button" onclick="searchShows()">
-          Search
-        </button>
-      </div>
+      const card = document.createElement("div");
 
-      <div id="results">
-        <div class="search-message">
-          Search for a show you're watching.
-        </div>
-      </div>
+      card.className = "card show-card";
 
-      <div class="credit">
-        TV data provided by
-        <a href="https://www.tvmaze.com" target="_blank">
-          TVmaze
-        </a>
-      </div>
+      card.innerHTML = `
 
-    </div>
+        ${show.image
+          ? `<img class="show-poster" src="${show.image}" alt="">`
+          : ""}
 
-  </div>
+        <div class="show-info">
 
+          <div class="show-name">
+            ${escapeHTML(show.name)}
+          </div>
 
-  <nav id="bottomNav">
+          <div class="platform">
+            ${escapeHTML(show.platform)}
+          </div>
 
-    <div class="active">
-      <span class="nav-icon">▶</span>
-      Up Next
-    </div>
+          <div class="episode">
 
-    <div>
-      <span class="nav-icon">▦</span>
-      My Shows
-    </div>
+            <span class="episode-number">
+              S${next.season} E${next.number}
+            </span>
 
-    <div>
-      <span class="nav-icon">●</span>
-      New
-    </div>
+            <br>
 
-    <div>
-      <span class="nav-icon">✓</span>
-      Finished
-    </div>
-
-  </nav>
-
-
-  <script>
-
-    const homeScreen = document.getElementById("homeScreen");
-    const searchScreen = document.getElementById("searchScreen");
-    const bottomNav = document.getElementById("bottomNav");
-    const searchInput = document.getElementById("searchInput");
-    const results = document.getElementById("results");
-
-
-    function openSearch() {
-
-      homeScreen.style.display = "none";
-      searchScreen.style.display = "block";
-      bottomNav.style.display = "none";
-
-      setTimeout(() => {
-        searchInput.focus();
-      }, 100);
-
-    }
-
-
-    function closeSearch() {
-
-      searchScreen.style.display = "none";
-      homeScreen.style.display = "block";
-      bottomNav.style.display = "flex";
-
-    }
-
-
-    searchInput.addEventListener("keydown", function(event) {
-
-      if (event.key === "Enter") {
-        searchShows();
-      }
-
-    });
-
-
-    async function searchShows() {
-
-      const query = searchInput.value.trim();
-
-      if (!query) {
-        return;
-      }
-
-      results.innerHTML =
-        '<div class="search-message">Searching...</div>';
-
-      try {
-
-        const response = await fetch(
-          "https://api.tvmaze.com/search/shows?q=" +
-          encodeURIComponent(query)
-        );
-
-        if (!response.ok) {
-          throw new Error("Search failed");
-        }
-
-        const data = await response.json();
-
-        showResults(data);
-
-      }
-
-      catch (error) {
-
-        results.innerHTML =
-          '<div class="search-message">Unable to search right now. Please try again.</div>';
-
-      }
-
-    }
-
-
-    function showResults(data) {
-
-      if (!data.length) {
-
-        results.innerHTML =
-          '<div class="search-message">No shows found.</div>';
-
-        return;
-
-      }
-
-      results.innerHTML = "";
-
-      data.slice(0, 10).forEach(item => {
-
-        const show = item.show;
-
-        const year =
-          show.premiered
-            ? show.premiered.substring(0, 4)
-            : "Year unknown";
-
-        let platform = "Platform unknown";
-
-        if (show.webChannel && show.webChannel.name) {
-
-          platform = show.webChannel.name;
-
-        }
-
-        else if (show.network && show.network.name) {
-
-          platform = show.network.name;
-
-        }
-
-        const imageHTML =
-          show.image && show.image.medium
-            ? `<img class="poster" src="${show.image.medium}" alt="">`
-            : `<div class="poster-placeholder">📺</div>`;
-
-        const result = document.createElement("div");
-
-        result.className = "result";
-
-        result.innerHTML = `
-
-          ${imageHTML}
-
-          <div class="result-info">
-
-            <div class="result-title">
-              ${escapeHTML(show.name)}
-            </div>
-
-            <div class="result-meta">
-              ${year}
-            </div>
-
-            <div class="result-meta">
-              ${escapeHTML(platform)}
-            </div>
-
-            <button
-              class="select-button"
-              onclick="selectShow(${show.id})"
-            >
-              Select Show
-            </button>
+            ${escapeHTML(next.name || "Untitled")}
 
           </div>
-        `;
 
-        results.appendChild(result);
+          <button
+            class="main-button"
+            onclick="markWatched(${show.id}, ${next.id})"
+          >
+            ✓ MARK WATCHED
+          </button>
 
-      });
+        </div>
+      `;
 
+      upNext.appendChild(card);
+
+    } else {
+
+      waitingCount++;
+
+      const future = getFutureEpisode(show);
+
+      const card = document.createElement("div");
+
+      card.className = "waiting-card";
+
+      let info = "You're caught up.";
+
+      if (future) {
+
+        info =
+          `Next: S${future.season} E${future.number}` +
+          (future.airdate
+            ? ` • ${formatDate(future.airdate)}`
+            : "");
+      }
+
+      card.innerHTML = `
+
+        <div class="waiting-title">
+          ${escapeHTML(show.name)}
+        </div>
+
+        <div class="waiting-info">
+          ${escapeHTML(show.platform)}<br>
+          ${info}
+        </div>
+      `;
+
+      waiting.appendChild(card);
+    }
+  });
+
+  if (!upCount) {
+
+    upNext.innerHTML = `
+      <div class="empty">
+        You're caught up on everything.
+      </div>
+    `;
+  }
+
+  if (!waitingCount) {
+
+    waiting.innerHTML = `
+      <div class="empty">
+        Nothing waiting right now.
+      </div>
+    `;
+  }
+}
+
+
+function markWatched(showID, episodeID) {
+
+  const show = library.find(item => item.id === showID);
+
+  if (!show) return;
+
+  show.lastWatchedID = episodeID;
+
+  saveLibrary();
+  renderHome();
+}
+
+
+function renderMyShows() {
+
+  const list = document.getElementById("myShowsList");
+
+  list.innerHTML = "";
+
+  if (!library.length) {
+
+    list.innerHTML = `
+      <div class="empty">
+        You haven't added any shows yet.
+      </div>
+    `;
+
+    return;
+  }
+
+  library.forEach(show => {
+
+    const lastIndex = getLastWatchedIndex(show);
+
+    let progress = "Not started";
+
+    if (lastIndex >= 0) {
+
+      const last = show.episodes[lastIndex];
+
+      progress =
+        `Last watched: S${last.season} E${last.number}`;
     }
 
+    const card = document.createElement("div");
 
-    function selectShow(showID) {
+    card.className = "card show-card";
 
-      alert(
-        "Show selected! Next we'll add seasons, episodes and your streaming service."
-      );
+    card.innerHTML = `
 
-      console.log("Selected TVmaze show:", showID);
+      ${show.image
+        ? `<img class="show-poster" src="${show.image}" alt="">`
+        : ""}
 
-    }
+      <div class="show-info">
+
+        <div class="show-name">
+          ${escapeHTML(show.name)}
+        </div>
+
+        <div class="platform">
+          ${escapeHTML(show.platform)}
+        </div>
+
+        <div class="episode">
+          ${progress}
+        </div>
+
+        <button
+          class="small-button"
+          onclick="markFinished(${show.id})"
+        >
+          Mark Finished
+        </button>
+
+        <br>
+
+        <button
+          class="remove-button"
+          onclick="removeShow(${show.id})"
+        >
+          Remove Show
+        </button>
+
+      </div>
+    `;
+
+    list.appendChild(card);
+  });
+}
 
 
-    function escapeHTML(text) {
+function markFinished(showID) {
 
-      const div = document.createElement("div");
+  const show = library.find(item => item.id === showID);
 
-      div.textContent = text || "";
+  if (!show) return;
 
-      return div.innerHTML;
+  show.status = "finished";
 
-    }
+  saveLibrary();
+  renderMyShows();
+}
 
-  </script>
+
+function removeShow(showID) {
+
+  if (!confirm("Remove this show from TV Memory?")) return;
+
+  library = library.filter(item => item.id !== showID);
+
+  saveLibrary();
+  renderMyShows();
+}
+
+
+function renderFinished() {
+
+  const list = document.getElementById("finishedList");
+
+  const finished =
+    library.filter(show => show.status === "finished");
+
+  if (!finished.length) {
+
+    list.innerHTML = `
+      <div class="empty">
+        Finished shows will appear here.
+      </div>
+    `;
+
+    return;
+  }
+
+  list.innerHTML = "";
+
+  finished.forEach(show => {
+
+    const card = document.createElement("div");
+
+    card.className = "card";
+
+    card.innerHTML = `
+
+      <div class="show-name">
+        ${escapeHTML(show.name)}
+      </div>
+
+      <div class="platform">
+        ${escapeHTML(show.platform)}
+      </div>
+
+      <button
+        class="small-button"
+        onclick="resumeShow(${show.id})"
+      >
+        Move Back to Watching
+      </button>
+    `;
+
+    list.appendChild(card);
+  });
+}
+
+
+function resumeShow(showID) {
+
+  const show = library.find(item => item.id === showID);
+
+  if (!show) return;
+
+  show.status = "watching";
+
+  saveLibrary();
+  renderFinished();
+}
+
+
+function formatDate(dateString) {
+
+  const date = new Date(dateString + "T12:00:00");
+
+  return date.toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+    year: "numeric"
+  });
+}
+
+
+function escapeHTML(text) {
+
+  const div = document.createElement("div");
+
+  div.textContent = text || "";
+
+  return div.innerHTML;
+}
+
+
+renderHome();
+
+</script>
 
 </body>
 </html>
